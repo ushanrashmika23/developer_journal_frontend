@@ -1,0 +1,73 @@
+[
+  {
+    "id": "1",
+    "title": "Task Management Dashboard",
+    "description": "A comprehensive task management application with real-time collaboration features. Built with React, TypeScript, and Supabase for backend services.",
+    "progress": 85,
+    "status": "in-progress",
+    "startDate": "2024-11-01",
+    "githubUrl": "https://github.com/username/task-dashboard",
+    "demoUrl": "https://task-dashboard-demo.netlify.app",
+    "image": "https://images.unsplash.com/photo-1554306274-f23873d9a26c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHx3ZWIlMjBkZXZlbG9wbWVudCUyMHByb2plY3R8ZW58MXx8fHwxNzU3MDI2ODA0fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+    "longDescription": [
+      "This task management dashboard is a comprehensive solution designed to help teams collaborate effectively and manage their projects with ease. Built with React, TypeScript, and Supabase, it combines modern web development practices with a focus on user experience and performance.",
+      "The application features real-time collaboration, allowing team members to see updates as they happen, comprehensive task organization with customizable categories and priorities, and detailed progress tracking with visual analytics.",
+      "What makes this project special is its attention to both technical excellence and user needs. Every feature was carefully considered and implemented with accessibility, performance, and scalability in mind."
+    ],
+    "techStack": [
+      "React",
+      "TypeScript",
+      "Supabase",
+      "Tailwind CSS",
+      "Framer Motion",
+      "React Hook Form",
+      "Recharts"
+    ],
+    "features": [
+      "Real-time task updates and collaboration",
+      "Drag-and-drop task organization",
+      "Custom project categories and tags",
+      "Team member assignment and notifications",
+      "Progress tracking with visual charts",
+      "File attachments and comments",
+      "Mobile-responsive design",
+      "Dark/light theme support",
+      "Advanced filtering and search",
+      "Time tracking and reporting"
+    ],
+    "challenges": [
+      "Implementing real-time updates without performance issues",
+      "Managing complex state across multiple components",
+      "Ensuring data consistency in collaborative environments",
+      "Creating intuitive drag-and-drop interactions",
+      "Optimizing for mobile devices and touch interfaces"
+    ],
+    "lessons": [
+      "Importance of proper state management patterns",
+      "Benefits of TypeScript in large applications",
+      "Real-time data synchronization strategies",
+      "User experience considerations for collaborative tools",
+      "Performance optimization techniques for React applications"
+    ],
+    "screenshots": [
+      "https://images.unsplash.com/photo-1551288049-bebda4e38f71?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxkYXNoYm9hcmQlMjBhbmFseXRpY3MlMjBzY3JlZW58ZW58MXx8fHwxNzU3MDYzMTc1fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral",
+      "https://images.unsplash.com/photo-1658953229625-aad99d7603b4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxtb2JpbGUlMjBhcHAlMjBpbnRlcmZhY2V8ZW58MXx8fHwxNzU3MDY1MzA1fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral"
+    ],
+    "createdAt": "2024-11-01T10:00:00Z",
+    "updatedAt": "2024-11-15T12:00:00Z"
+  },
+  {
+    "id": "6",
+    "title": "My Journey into Machine Learning",
+    "excerpt": "Sharing my experience transitioning from web development to exploring machine learning concepts, tools, and first projects.",
+    "tags": [
+      "Machine Learning",
+      "Python",
+      "Career",
+      "Learning Journey"
+    ],
+    "publishDate": "2024-12-05",
+    "readTime": "9",
+    "category": "reflection"
+  }
+]
