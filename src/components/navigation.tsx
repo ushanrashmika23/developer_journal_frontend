@@ -43,7 +43,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
           <div className="flex items-center">
             <button
               onClick={() => onPageChange('home')}
-              className="text-xl font-semibold text-foreground hover:text-primary transition-colors"
+              className="text-xl font-semibold text-foreground hover:text-primary transition-colors cursor-pointer"
             >
               DevJournal
             </button>
@@ -55,7 +55,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
               <button
                 key={item.id}
                 onClick={() => onPageChange(item.id)}
-                className={`text-sm font-medium transition-colors hover:text-primary ${currentPage === item.id
+                className={`text-sm font-medium transition-colors hover:text-primary cursor-pointer ${currentPage === item.id
                     ? 'text-primary'
                     : 'text-muted-foreground'
                   }`}
@@ -135,7 +135,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
                     onPageChange(item.id);
                     setIsMobileMenuOpen(false);
                   }}
-                  className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium transition-colors ${currentPage === item.id
+                  className={`block w-full text-left px-3 py-2 rounded-md text-base font-medium transition-colors cursor-pointer ${currentPage === item.id
                       ? 'text-primary bg-primary/10'
                       : 'text-foreground hover:text-primary hover:bg-muted'
                     }`}

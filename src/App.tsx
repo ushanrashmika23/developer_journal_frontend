@@ -125,7 +125,7 @@ export default function App() {
                   <li>
                     <button
                       onClick={() => handlePageChange('home')}
-                      className="hover:text-primary transition-colors"
+                      className="hover:text-primary transition-colors cursor-pointer"
                     >
                       Home
                     </button>
@@ -133,7 +133,7 @@ export default function App() {
                   <li>
                     <button
                       onClick={() => handlePageChange('projects')}
-                      className="hover:text-primary transition-colors"
+                      className="hover:text-primary transition-colors cursor-pointer"
                     >
                       Projects
                     </button>
@@ -141,7 +141,7 @@ export default function App() {
                   <li>
                     <button
                       onClick={() => handlePageChange('blog')}
-                      className="hover:text-primary transition-colors"
+                      className="hover:text-primary transition-colors cursor-pointer"
                     >
                       Blog
                     </button>
@@ -157,7 +157,7 @@ export default function App() {
                   <li>
                     <button
                       onClick={() => handlePageChange('about')}
-                      className="hover:text-primary transition-colors"
+                      className="hover:text-primary transition-colors cursor-pointer"
                     >
                       About
                     </button>
@@ -173,7 +173,7 @@ export default function App() {
                       href="https://github.com/ushanrashmika23"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:text-primary transition-colors"
+                      className="hover:text-primary transition-colors cursor-pointer"
                     >
                       GitHub
                     </a>
@@ -183,7 +183,7 @@ export default function App() {
                       href="https://linkedin.com/in/ushanrashmika23"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:text-primary transition-colors"
+                      className="hover:text-primary transition-colors cursor-pointer"
                     >
                       LinkedIn
                     </a>
@@ -193,7 +193,7 @@ export default function App() {
                       href="https://ushanrashmika23.vercel.app/"
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="hover:text-primary transition-colors"
+                      className="hover:text-primary transition-colors cursor-pointer"
                     >
                       Portfolio
                     </a>
@@ -201,7 +201,7 @@ export default function App() {
                   <li>
                     <a
                       href="mailto:ushanrashmika23@gmail.com"
-                      className="hover:text-primary transition-colors"
+                      className="hover:text-primary transition-colors cursor-pointer"
                     >
                       Email
                     </a>
