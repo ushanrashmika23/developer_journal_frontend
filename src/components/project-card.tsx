@@ -76,7 +76,7 @@ export function ProjectCard({ project, onClick }: ProjectCardProps) {
         </div>
         <Badge 
           variant="outline" 
-          className={getStatusColor(project.status)}
+          className={`text-xs ${getStatusColor(project.status)}`}
         >
           {getStatusLabel(project.status)}
         </Badge>

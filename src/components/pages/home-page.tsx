@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { ArrowRight, Code, BookOpen, Target, Calendar } from 'lucide-react';
 import { Button } from '../ui/button';
-import { Badge } from '../ui/badge';
 import { BlogCard, BlogPost } from '../blog-card';
 import { SkeletonBlogCard } from '../ui/skeleton-blog-card';
 import { Skeleton } from '../ui/skeleton';
 import { ProjectCard, Project } from '../project-card';
 import { ImageWithFallback } from '../figma/ImageWithFallback';
+import { API_ENDPOINTS } from '../../config/api';
 
 interface HomePageProps {
   onPageChange: (page: string, params?: {[key: string]: string}) => void;
@@ -36,7 +36,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
       try {
         setLoading(true);
         setError(null);
-        const response = await fetch('http://localhost:3000/posts/metaList');
+        const response = await fetch(API_ENDPOINTS.POSTS_META_LIST);
         if (!response.ok) {
           throw new Error('Failed to fetch posts');
         }
@@ -74,7 +74,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
       try {
         setProjectsLoading(true);
         setProjectsError(null);
-        const response = await fetch('http://localhost:3000/projects/metaList');
+        const response = await fetch(API_ENDPOINTS.PROJECTS_META_LIST);
         if (!response.ok) {
           throw new Error('Failed to fetch projects');
         }
@@ -118,10 +118,9 @@ export function HomePage({ onPageChange }: HomePageProps) {
     return isNaN(parsed) ? 0 : parsed;
   };
 
-  // Get featured post (first post) and recent posts (next 3)
+  // Get featured post (first post) and recent posts
   const featuredPost = blogPosts[0];
-  const latestPosts = blogPosts.slice(1, 4); // Next 3 posts for the compact layout
-  const recentPosts = blogPosts.slice(4, 6); // Posts 5-6 for recent posts section
+  const recentPosts = blogPosts.slice(1, 3); // Next 2 posts for recent posts section
 
   // Get featured projects (first 2 projects)
   const featuredProjects = projects.slice(0, 2);
@@ -180,7 +179,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
       </section>
 
       {/* Stats Section */}
-      <section className="max-w-[1200px] mx-auto px-6 lg:px-8 py-16">
+      <section className="max-w-[1200px] mx-auto px-6 lg:px-8 py-10 pb-16">
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
           {stats.map((stat, index) => (
             <div key={stat.label} className="text-center fade-in" style={{ animationDelay: `${index * 0.1}s` }}>
@@ -209,36 +208,16 @@ export function HomePage({ onPageChange }: HomePageProps) {
         </div>
         
         {loading ? (
-          <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
-              <SkeletonBlogCard featured={true} />
-            </div>
-            <div className="space-y-4">
-              {Array.from({ length: 3 }).map((_, index) => (
-                <div key={index} className="flex gap-3 p-3 rounded-lg border border-border">
-                  <Skeleton className="flex-shrink-0 w-16 h-16 rounded-md" />
-                  <div className="flex-1 min-w-0">
-                    <Skeleton className="h-4 w-full mb-1" />
-                    <Skeleton className="h-3 w-3/4 mb-2" />
-                    <div className="flex items-center justify-between">
-                      <Skeleton className="h-4 w-12" />
-                      <Skeleton className="h-3 w-8" />
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
+          <div>
+            <SkeletonBlogCard featured={true} />
           </div>
         ) : featuredPost ? (
-          <div className="grid lg:grid-cols-3 gap-6">
-            <div className="lg:col-span-2">
-              <BlogCard 
-                post={featuredPost} 
-                featured={true}
-                onClick={(postId) => onPageChange('blog-post-view', { id: postId })}
-              />
-            </div>
-            
+          <div>
+            <BlogCard 
+              post={featuredPost} 
+              featured={true}
+              onClick={(postId) => onPageChange('blog-post-view', { id: postId })}
+            />
           </div>
         ) : null}
       </section>
@@ -251,7 +230,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
             <SkeletonBlogCard />
             <SkeletonBlogCard />
           </div>
-        ) : (
+        ) : recentPosts.length > 0 ? (
           <div className="grid md:grid-cols-2 gap-6">
             {recentPosts.map((post) => (
               <BlogCard 
@@ -260,6 +239,28 @@ export function HomePage({ onPageChange }: HomePageProps) {
                 onClick={(postId) => onPageChange('blog-post-view', { id: postId })}
               />
             ))}
+          </div>
+        ) : blogPosts.length > 1 ? (
+          // If we don't have enough posts for the "recent posts" section, show the next available posts
+          <div className="grid md:grid-cols-2 gap-6">
+            {blogPosts.slice(1, 3).map((post) => (
+              <BlogCard 
+                key={post.id} 
+                post={post}
+                onClick={(postId) => onPageChange('blog-post-view', { id: postId })}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16">
+            {/* <div className="text-6xl mb-4">📝</div> */}
+            <h3 className="text-xl font-semibold text-foreground mb-2">No recent posts</h3>
+            <p className="text-muted-foreground mb-6">
+              Recent posts will appear here once more content is added.
+            </p>
+            <Button onClick={() => onPageChange('blog')}>
+              View All Posts
+            </Button>
           </div>
         )}
       </section>
@@ -334,7 +335,7 @@ export function HomePage({ onPageChange }: HomePageProps) {
           </div>
         ) : (
           <div className="text-center py-16">
-            <div className="text-6xl mb-4">🚀</div>
+            {/* <div className="text-6xl mb-4">🚀</div> */}
             <h3 className="text-xl font-semibold text-foreground mb-2">No projects yet</h3>
             <p className="text-muted-foreground mb-6">
               Projects will appear here once they're added to the system.

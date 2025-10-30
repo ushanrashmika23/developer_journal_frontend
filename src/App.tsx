@@ -8,7 +8,6 @@ import { TimelinePage } from './components/pages/timeline-page';
 import { AboutPage } from './components/pages/about-page';
 import { BlogPostView } from './components/pages/blog-post-view';
 import { ProjectView } from './components/pages/project-view';
-import { TestBlogPostView } from './components/pages/test-blog-post-view';
 
 export default function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -83,13 +82,6 @@ export default function App() {
         return (
           <BlogPostView
             postId={currentParams.id || '1'}
-            onBack={() => handlePageChange('blog')}
-            onPageChange={handlePageChange}
-          />
-        );
-      case 'test-blog-post':
-        return (
-          <TestBlogPostView
             onBack={() => handlePageChange('blog')}
             onPageChange={handlePageChange}
           />

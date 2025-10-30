@@ -6,6 +6,7 @@ import { Card, CardContent } from '../ui/card';
 import { Progress } from '../ui/progress';
 import { Input } from '../ui/input';
 import { ImageWithFallback } from '../figma/ImageWithFallback';
+import { API_ENDPOINTS } from '../../config/api';
 import DevImg from '../img/developer_profile.png';
 
 interface AboutPageProps {
@@ -18,7 +19,7 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
     { name: 'TypeScript', level: 85, category: 'Frontend' },
     { name: 'React', level: 90, category: 'Frontend' },
     { name: 'Next.js', level: 80, category: 'Frontend' },
-    { name: 'Vue.js', level: 70, category: 'Frontend' },
+    { name: 'Angular', level: 70, category: 'Frontend' },
     { name: 'CSS/SCSS', level: 85, category: 'Frontend' },
     { name: 'Tailwind CSS', level: 90, category: 'Frontend' },
     { name: 'Node.js', level: 75, category: 'Backend' },
@@ -36,21 +37,21 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
     {
       title: 'Freelance Web Developer',
       company: 'Self-employed',
-      period: '2024 - Present',
+      period: '2023 - Present',
       description: 'Building modern web applications for clients using React, TypeScript, and various backend technologies. Focus on performance, accessibility, and user experience.',
       technologies: ['React', 'TypeScript', 'Next.js', 'Supabase'],
     },
-    {
-      title: 'Full Stack Developer Bootcamp',
-      company: 'Tech Bootcamp',
-      period: '2024',
-      description: 'Intensive 6-month program covering full-stack web development, from frontend frameworks to backend services and database design.',
-      technologies: ['JavaScript', 'React', 'Node.js', 'PostgreSQL'],
-    },
+    // {
+    //   title: 'Full Stack Developer Master Diploma',
+    //   company: 'Devloper Stacks',
+    //   period: '2024',
+    //   description: 'Intensive 6-month program covering full-stack web development, from frontend frameworks to backend services and database design.',
+    //   technologies: ['JavaScript', 'React', 'Node.js', 'PostgreSQL'],
+    // },
     {
       title: 'Self-taught Developer',
       company: 'Personal Learning',
-      period: '2023 - 2024',
+      period: 'present',
       description: 'Dedicated self-study period learning web development fundamentals through online courses, documentation, and building personal projects.',
       technologies: ['HTML', 'CSS', 'JavaScript', 'Git'],
     },
@@ -89,7 +90,7 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
     setSubmitStatus('idle');
 
     try {
-      const response = await fetch('http://localhost:3000/subscribers/new', {
+      const response = await fetch(API_ENDPOINTS.SUBSCRIBERS_NEW, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -6,6 +6,7 @@ import { Skeleton } from '../ui/skeleton';
 import { Input } from '../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Badge } from '../ui/badge';
+import { API_ENDPOINTS } from '../../config/api';
 
 interface BlogPageProps {
   onPageChange: (page: string, params?: {[key: string]: string}) => void;
@@ -35,7 +36,7 @@ export function BlogPage({ onPageChange }: BlogPageProps) {
       try {
         setLoading(true);
         setError(null);
-        const response = await fetch('http://localhost:3000/posts/metaList');
+        const response = await fetch(API_ENDPOINTS.POSTS_META_LIST);
         if (!response.ok) {
           throw new Error('Failed to fetch posts');
         }

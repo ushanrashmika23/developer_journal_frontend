@@ -7,6 +7,7 @@ import { Card, CardContent } from '../ui/card';
 import { Project } from '../project-card';
 import { ImageWithFallback } from '../figma/ImageWithFallback';
 import { Skeleton } from '../ui/skeleton';
+import { API_ENDPOINTS } from '../../config/api';
 
 interface ProjectViewProps {
   projectId: string;
@@ -51,7 +52,7 @@ export function ProjectView({ projectId, onBack, onPageChange }: ProjectViewProp
       try {
         setLoading(true);
         setError(null);
-        const response = await fetch(`http://localhost:3000/projects/${projectId}`);
+        const response = await fetch(API_ENDPOINTS.PROJECT_BY_ID(projectId));
         if (!response.ok) {
           throw new Error('Failed to fetch project');
         }

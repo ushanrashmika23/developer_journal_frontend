@@ -5,6 +5,9 @@ import { Badge } from '../ui/badge';
 import { Skeleton } from '../ui/skeleton';
 import { BlogPost } from '../blog-card';
 import { ImageWithFallback } from '../figma/ImageWithFallback';
+import { useTheme } from '../theme-provider';
+import { API_ENDPOINTS } from '../../config/api';
+import { log } from 'console';
 
 interface BlogPostViewProps {
   postId: string;
@@ -30,6 +33,7 @@ export function BlogPostView({ postId, onBack, onPageChange }: BlogPostViewProps
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const { theme } = useTheme();
   const startTimeRef = useRef<number | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
 
@@ -114,7 +118,7 @@ export function BlogPostView({ postId, onBack, onPageChange }: BlogPostViewProps
       try {
         setLoading(true);
         setError(null);
-        const response = await fetch(`http://localhost:3000/posts/${postId}`);
+        const response = await fetch(API_ENDPOINTS.POST_BY_ID(postId));
         if (!response.ok) {
           throw new Error('Failed to fetch post');
         }
@@ -134,6 +138,8 @@ export function BlogPostView({ postId, onBack, onPageChange }: BlogPostViewProps
             image: apiPost.image,
           };
           setPost(transformedPost);
+          console.log(post);
+
         } else {
           throw new Error('Invalid API response');
         }
@@ -263,24 +269,26 @@ export function BlogPostView({ postId, onBack, onPageChange }: BlogPostViewProps
 
         {/* Post Header */}
         <div className="mb-8">
-          <div className="flex items-center gap-4 mb-4">
+          <div className="flex items-center justify-between mb-4">
             <Badge
               variant="outline"
               className={getCategoryColor(post.category)}
             >
               {post.category.charAt(0).toUpperCase() + post.category.slice(1)}
             </Badge>
-            <div className="flex items-center text-sm text-muted-foreground">
-              <Clock className="w-4 h-4 mr-1" />
-              {Math.max(Math.floor(getReadingTime(post.id) / 60), 1)} min read
-            </div>
-            <div className="flex items-center text-sm text-muted-foreground">
-              <Calendar className="w-4 h-4 mr-1" />
-              {new Date(post.publishDate).toLocaleDateString('en-US', {
-                year: 'numeric',
-                month: 'long',
-                day: 'numeric'
-              })}
+            <div className="flex items-center gap-4 text-sm text-muted-foreground">
+              <div className="flex items-center">
+                <Clock className="w-4 h-4 mr-1" />
+                {Math.max(Math.floor(getReadingTime(post.id) / 60), 1)} min read
+              </div>
+              <div className="flex items-center">
+                <Calendar className="w-4 h-4 mr-1" />
+                {new Date(post.publishDate).toLocaleDateString('en-US', {
+                  year: 'numeric',
+                  month: 'long',
+                  day: 'numeric'
+                })}
+              </div>
             </div>
           </div>
 
@@ -322,74 +330,218 @@ export function BlogPostView({ postId, onBack, onPageChange }: BlogPostViewProps
       {/* Post Content */}
       <section className="max-w-[800px] mx-auto px-6 lg:px-8 pb-16">
         <article className="prose prose-lg max-w-none">
-          <div className="text-foreground leading-relaxed">
+          <div className={`leading-7 text-base ${theme === 'dark' ? 'text-foreground/65' : 'text-foreground/80'}`}>
             {post.content?.split('\n\n').map((paragraph, index) => {
+              // Headings
               if (paragraph.startsWith('# ')) {
                 return (
-                  <h1 key={index} className="text-3xl font-bold text-foreground mb-6 mt-8">
+                  <h1 key={index} className={`text-3xl font-bold mb-8 mt-10 leading-tight ${theme === 'dark' ? 'text-foreground/80' : 'text-foreground/90'}`}>
                     {paragraph.replace('# ', '')}
                   </h1>
                 );
               }
               if (paragraph.startsWith('## ')) {
                 return (
-                  <h2 key={index} className="text-2xl font-semibold text-foreground mb-4 mt-8">
+                  <h2 key={index} className={`text-2xl font-bold mb-6 mt-10 leading-snug ${theme === 'dark' ? 'text-foreground/80' : 'text-foreground/90'}`}>
                     {paragraph.replace('## ', '')}
                   </h2>
                 );
               }
               if (paragraph.startsWith('### ')) {
                 return (
-                  <h3 key={index} className="text-xl font-semibold text-foreground mb-3 mt-6">
+                  <h3 key={index} className={`text-xl font-semibold mb-4 mt-8 leading-snug ${theme === 'dark' ? 'text-foreground/80' : 'text-foreground/90'}`}>
                     {paragraph.replace('### ', '')}
                   </h3>
                 );
               }
+
+              // Code blocks
               if (paragraph.startsWith('```')) {
                 const codeBlock = paragraph.replace(/```\w*\n?/, '').replace(/\n?```$/, '');
                 return (
-                  <pre key={index} className="bg-code-bg border border-border rounded-lg p-4 mb-6 overflow-x-auto">
-                    <code className="text-sm font-mono text-foreground">{codeBlock}</code>
+                  <pre key={index} className="bg-code-bg border border-border rounded-xl p-6 mb-8 overflow-x-auto scrollbar-hide shadow-sm">
+                    <code className={`text-sm font-mono leading-relaxed ${theme === 'dark' ? 'text-foreground/60' : 'text-foreground/75'}`}>{codeBlock}</code>
                   </pre>
                 );
               }
-              if (paragraph.startsWith('*') && paragraph.endsWith('*')) {
+
+              // Blockquotes
+              if (paragraph.startsWith('>')) {
+                const quote = paragraph.replace(/^> ?/gm, '');
                 return (
-                  <p key={index} className="text-muted-foreground italic text-center mb-6 mt-8">
+                  <blockquote key={index} className={`border-l-4 border-primary/50 pl-6 py-4 mb-8 italic rounded-r-lg ${theme === 'dark' ? 'text-foreground/70 bg-primary/5' : 'text-foreground/85 bg-primary/5'}`}>
+                    <div className={`${theme === 'dark' ? 'text-foreground/70' : 'text-foreground/85'}`}>
+                      {quote}
+                    </div>
+                  </blockquote>
+                );
+              }
+
+              // Tables
+              if (paragraph.includes('|') && paragraph.split('\n').length > 1) {
+                const lines = paragraph.split('\n');
+                const headers = lines[0].split('|').map(h => h.trim()).filter(h => h);
+                const rows = lines.slice(2).map(line =>
+                  line.split('|').map(cell => cell.trim()).filter(cell => cell)
+                );
+
+                return (
+                  <div key={index} className="overflow-x-auto mb-8">
+                    <table className="min-w-full border border-border rounded-lg">
+                      <thead>
+                        <tr className="bg-muted/30">
+                          {headers.map((header, i) => (
+                            <th key={i} className={`px-4 py-3 text-left font-semibold border-b border-border ${theme === 'dark' ? 'text-foreground/80' : 'text-foreground/90'}`}>
+                              {header}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {rows.map((row, i) => (
+                          <tr key={i} className="border-b border-border/50">
+                            {row.map((cell, j) => (
+                              <td key={j} className={`px-4 py-3 ${theme === 'dark' ? 'text-foreground/65' : 'text-foreground/80'}`}>
+                                {cell.split(/(\*\*.*?\*\*|`.*?`|\[.*?\]\(.*?\))/g).map((part, k) => {
+                                  // Bold text
+                                  if (part.startsWith('**') && part.endsWith('**')) {
+                                    return <strong key={k} className={`font-bold ${theme === 'dark' ? 'text-primary/70' : 'text-primary/80'}`}>{part.slice(2, -2)}</strong>;
+                                  }
+                                  // Inline code
+                                  if (part.startsWith('`') && part.endsWith('`') && part.length > 2) {
+                                    return (
+                                      <code key={k} className={`bg-primary/10 px-2 py-1 rounded-md text-sm font-mono font-medium ${theme === 'dark' ? 'text-primary/70' : 'text-primary/85'}`}>
+                                        {part.slice(1, -1)}
+                                      </code>
+                                    );
+                                  }
+                                  // Links
+                                  if (part.match(/\[.*?\]\(.*?\)/)) {
+                                    const match = part.match(/\[(.*?)\]\((.*?)\)/);
+                                    if (match) {
+                                      const [, text, url] = match;
+                                      return (
+                                        <a key={k} href={url} target="_blank" rel="noopener noreferrer"
+                                          className={`text-primary hover:text-primary/80 underline transition-colors ${theme === 'dark' ? 'text-primary/80 hover:text-primary/60' : 'text-primary hover:text-primary/80'}`}>
+                                          {text}
+                                        </a>
+                                      );
+                                    }
+                                  }
+                                  return part;
+                                })}
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                );
+              }
+
+              // Images
+              if (paragraph.match(/!\[.*?\]\(.*?\)/)) {
+                const match = paragraph.match(/!\[(.*?)\]\((.*?)\)/);
+                if (match) {
+                  const [, alt, src] = match;
+                  return (
+                    <div key={index} className="mb-8">
+                      <ImageWithFallback
+                        src={src}
+                        alt={alt}
+                        className="w-full rounded-lg border border-border shadow-sm"
+                      />
+                      {alt && (
+                        <p className={`text-center text-sm mt-2 italic ${theme === 'dark' ? 'text-muted-foreground/70' : 'text-muted-foreground'}`}>
+                          {alt}
+                        </p>
+                      )}
+                    </div>
+                  );
+                }
+              }
+
+              // Italic/emphasis (entire paragraph)
+              if (paragraph.startsWith('*') && paragraph.endsWith('*') && !paragraph.includes('**')) {
+                return (
+                  <p key={index} className={`italic text-center mb-8 mt-8 text-base font-medium ${theme === 'dark' ? 'text-primary/60' : 'text-primary/70'}`}>
                     {paragraph.replace(/^\*/, '').replace(/\*$/, '')}
                   </p>
                 );
               }
-              if (paragraph.includes('`') && !paragraph.startsWith('```')) {
-                const parts = paragraph.split('`');
-                return (
-                  <p key={index} className="text-foreground mb-4">
-                    {parts.map((part, i) =>
-                      i % 2 === 0 ? part : (
-                        <code key={i} className="bg-code-bg px-1 py-0.5 rounded text-sm font-mono">
-                          {part}
-                        </code>
-                      )
-                    )}
-                  </p>
-                );
-              }
+
+              // Unordered lists
               if (paragraph.startsWith('-')) {
                 return (
-                  <ul key={index} className="list-disc list-inside mb-4 space-y-1">
+                  <ul key={index} className="list-disc list-inside mb-6 space-y-3 pl-4">
                     {paragraph.split('\n').map((item, i) => (
-                      <li key={i} className="text-foreground">
-                        {item.replace(/^- \*\*(.*?)\*\*: /, '').replace(/^- /, '')}
+                      <li key={i} className={`leading-7 text-base ${theme === 'dark' ? 'text-foreground/65' : 'text-foreground/80'}`}>
+                        {item.replace(/^- /, '').split(/(\*\*.*?\*\*|`.*?`|\[.*?\]\(.*?\))/g).map((part, j) => {
+                          // Bold text
+                          if (part.startsWith('**') && part.endsWith('**')) {
+                            return <strong key={j} className={`font-bold ${theme === 'dark' ? 'text-primary/70' : 'text-primary/80'}`}>{part.slice(2, -2)}</strong>;
+                          }
+                          // Inline code
+                          if (part.startsWith('`') && part.endsWith('`') && part.length > 2) {
+                            return (
+                              <code key={j} className={`bg-primary/10 px-2 py-1 rounded-md text-sm font-mono font-medium ${theme === 'dark' ? 'text-primary/70' : 'text-primary/85'}`}>
+                                {part.slice(1, -1)}
+                              </code>
+                            );
+                          }
+                          // Links
+                          if (part.match(/\[.*?\]\(.*?\)/)) {
+                            const match = part.match(/\[(.*?)\]\((.*?)\)/);
+                            if (match) {
+                              const [, text, url] = match;
+                              return (
+                                <a key={j} href={url} target="_blank" rel="noopener noreferrer"
+                                  className={`text-primary hover:text-primary/80 underline transition-colors ${theme === 'dark' ? 'text-primary/80 hover:text-primary/60' : 'text-primary hover:text-primary/80'}`}>
+                                  {text}
+                                </a>
+                              );
+                            }
+                          }
+                          return part;
+                        })}
                       </li>
                     ))}
                   </ul>
                 );
               }
+
+              // Regular paragraphs with inline formatting (links, bold, inline code)
               return (
-                <p key={index} className="text-foreground mb-4 leading-relaxed">
-                  {paragraph.split('**').map((part, i) =>
-                    i % 2 === 0 ? part : <strong key={i}>{part}</strong>
-                  )}
+                <p key={index} className={`mb-6 leading-7 text-base ${theme === 'dark' ? 'text-foreground/65' : 'text-foreground/80'}`}>
+                  {paragraph.split(/(\*\*.*?\*\*|`.*?`|\[.*?\]\(.*?\))/g).map((part, i) => {
+                    // Bold text
+                    if (part.startsWith('**') && part.endsWith('**')) {
+                      return <strong key={i} className={`font-bold ${theme === 'dark' ? 'text-primary/70' : 'text-primary/80'}`}>{part.slice(2, -2)}</strong>;
+                    }
+                    // Inline code
+                    if (part.startsWith('`') && part.endsWith('`') && part.length > 2) {
+                      return (
+                        <code key={i} className={`bg-primary/10 px-2 py-1 rounded-md text-sm font-mono font-medium ${theme === 'dark' ? 'text-primary/70' : 'text-primary/85'}`}>
+                          {part.slice(1, -1)}
+                        </code>
+                      );
+                    }
+                    // Links
+                    if (part.match(/\[.*?\]\(.*?\)/)) {
+                      const match = part.match(/\[(.*?)\]\((.*?)\)/);
+                      if (match) {
+                        const [, text, url] = match;
+                        return (
+                          <a key={i} href={url} target="_blank" rel="noopener noreferrer"
+                            className={`text-primary hover:text-primary/80 underline transition-colors ${theme === 'dark' ? 'text-primary/80 hover:text-primary/60' : 'text-primary hover:text-primary/80'}`}>
+                            {text}
+                          </a>
+                        );
+                      }
+                    }
+                    return part;
+                  })}
                 </p>
               );
             })}
@@ -419,6 +571,7 @@ export function BlogPostView({ postId, onBack, onPageChange }: BlogPostViewProps
           </div>
         </div>
       </section>
+      {/* <p>{post.content}</p> */}
     </div>
   );
 }

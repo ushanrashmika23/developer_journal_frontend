@@ -6,6 +6,7 @@ import { Input } from '../ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { Badge } from '../ui/badge';
 import { Skeleton } from '../ui/skeleton';
+import { API_ENDPOINTS } from '../../config/api';
 
 interface ProjectsPageProps {
   onPageChange: (page: string, params?: {[key: string]: string}) => void;
@@ -38,7 +39,7 @@ export function ProjectsPage({ onPageChange }: ProjectsPageProps) {
       try {
         setLoading(true);
         setError(null);
-        const response = await fetch('http://localhost:3000/projects/metaList');
+        const response = await fetch(API_ENDPOINTS.PROJECTS_META_LIST);
         if (!response.ok) {
           throw new Error('Failed to fetch projects');
         }

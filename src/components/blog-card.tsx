@@ -69,7 +69,7 @@ export function BlogCard({ post, onClick, featured = false }: BlogCardProps) {
         <div className="flex items-start justify-between mb-3">
           <Badge 
             variant="outline" 
-            className={getCategoryColor(post.category)}
+            className={`text-xs ${getCategoryColor(post.category)}`}
           >
             {post.category.charAt(0).toUpperCase() + post.category.slice(1)}
           </Badge>
