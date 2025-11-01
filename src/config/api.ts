@@ -15,4 +15,7 @@ export const API_ENDPOINTS = {
   
   // Subscribers
   SUBSCRIBERS_NEW: `${API_CONFIG.BASE_URL}/subscribers/new`,
+  
+  // Utils
+  COUNTS: `${API_CONFIG.BASE_URL}/utils/counts`,
 } as const;

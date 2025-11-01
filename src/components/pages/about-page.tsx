@@ -7,6 +7,7 @@ import { Progress } from '../ui/progress';
 import { Input } from '../ui/input';
 import { ImageWithFallback } from '../figma/ImageWithFallback';
 import { API_ENDPOINTS } from '../../config/api';
+// @ts-ignore: Ignore image module type issues (add a `declare module '*.png'` in a .d.ts file for a proper fix)
 import DevImg from '../img/developer_profile.png';
 
 interface AboutPageProps {
@@ -23,6 +24,8 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
     { name: 'CSS/SCSS', level: 85, category: 'Frontend' },
     { name: 'Tailwind CSS', level: 90, category: 'Frontend' },
     { name: 'Node.js', level: 75, category: 'Backend' },
+    { name: 'Java', level: 75, category: 'Backend' },
+    { name: 'SpringBoot', level: 75, category: 'Backend' },
     { name: 'Express.js', level: 70, category: 'Backend' },
     { name: 'PostgreSQL', level: 75, category: 'Backend' },
     { name: 'MongoDB', level: 70, category: 'Backend' },
@@ -292,40 +295,48 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
               <Button 
                 size="lg" 
                 className={`w-full sm:w-auto transition-all duration-300 ${
-                  submitStatus === 'success' ? 'bg-green-600 hover:bg-green-700' : ''
+                  submitStatus === 'success' 
+                    ? 'bg-green-600 hover:bg-green-700 text-white dark:bg-green-500 dark:hover:bg-green-600' 
+                    : submitStatus === 'error'
+                    ? 'bg-destructive hover:bg-destructive/90 text-destructive-foreground'
+                    : 'bg-primary hover:bg-primary/90 text-primary-foreground'
                 }`}
                 onClick={handleNewsletterSubmit}
                 disabled={isSubmitting || submitStatus === 'success'}
               >
                 {isSubmitting ? (
                   <>
-                    <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                    Joining...
+                    <Loader2 className={`w-5 h-5 mr-2 animate-spin ${
+                      submitStatus === 'success' ? 'text-white' : 'text-current'
+                    }`} />
+                    <span className={submitStatus === 'success' ? 'text-white' : 'text-current'}>
+                      Joining...
+                    </span>
                   </>
                 ) : submitStatus === 'success' ? (
                   <>
-                    <CheckCircle className="w-5 h-5 mr-2" />
-                    Joined!
+                    <CheckCircle className="w-5 h-5 mr-2 text-white dark:text-white" />
+                    <span className="text-white dark:text-white">Joined!</span>
                   </>
                 ) : submitStatus === 'error' ? (
                   <>
-                    <Bell className="w-5 h-5 mr-2" />
-                    Try Again
+                    <Bell className="w-5 h-5 mr-2 text-current" />
+                    <span className="text-current">Try Again</span>
                   </>
                 ) : (
                   <>
-                    <Bell className="w-5 h-5 mr-2" />
-                    Join the Journey
+                    <Bell className="w-5 h-5 mr-2 text-current" />
+                    <span className="text-current">Join the Journey</span>
                   </>
                 )}
               </Button>
               {submitStatus === 'error' && (
-                <p className="text-sm text-red-500 mt-2 animate-pulse">
+                <p className="text-sm text-destructive mt-2 animate-pulse">
                   Please check your details and try again.
                 </p>
               )}
               {submitStatus === 'success' && (
-                <p className="text-sm text-green-600 mt-2 animate-bounce">
+                <p className="text-sm text-green-600 dark:text-green-400 mt-2 animate-bounce">
                   Welcome aboard! Check your email for confirmation.
                 </p>
               )}

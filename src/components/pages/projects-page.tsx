@@ -166,10 +166,10 @@ export function ProjectsPage({ onPageChange }: ProjectsPageProps) {
               <Filter className="h-5 w-5 text-muted-foreground" />
               <span className="font-medium text-foreground">Filters</span>
             </div>
-            <Button variant="outline" size="sm" className="lg:ml-auto">
+            {/* <Button variant="outline" size="sm" className="lg:ml-auto">
               <Plus className="h-4 w-4 mr-2" />
               New Project
-            </Button>
+            </Button> */}
           </div>
           
           <div className="grid md:grid-cols-3 gap-4">

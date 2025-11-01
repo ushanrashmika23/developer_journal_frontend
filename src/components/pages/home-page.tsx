@@ -25,8 +25,10 @@ interface ApiBlogPost {
 export function HomePage({ onPageChange }: HomePageProps) {
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
+  const [counts, setCounts] = useState({ postCount: 0, projectCount: 0 });
   const [loading, setLoading] = useState(true);
   const [projectsLoading, setProjectsLoading] = useState(true);
+  const [countsLoading, setCountsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [projectsError, setProjectsError] = useState<string | null>(null);
 
@@ -108,6 +110,33 @@ export function HomePage({ onPageChange }: HomePageProps) {
     fetchProjects();
   }, []);
 
+  // Fetch counts from API
+  useEffect(() => {
+    const fetchCounts = async () => {
+      try {
+        setCountsLoading(true);
+        const response = await fetch(API_ENDPOINTS.COUNTS);
+        if (!response.ok) {
+          throw new Error('Failed to fetch counts');
+        }
+        const result = await response.json();
+        if (result.code === 200 && result.status === 'success') {
+          setCounts(result.data);
+        } else {
+          throw new Error('Invalid API response');
+        }
+      } catch (err) {
+        console.error('Error fetching counts:', err);
+        // Keep default values if fetch fails
+        setCounts({ postCount: 0, projectCount: 0 });
+      } finally {
+        setCountsLoading(false);
+      }
+    };
+
+    fetchCounts();
+  }, []);
+
   // Get reading time from localStorage
   const getReadingTime = (postId: string): number => {
     if (!postId) return 0;
@@ -126,8 +155,8 @@ export function HomePage({ onPageChange }: HomePageProps) {
   const featuredProjects = projects.slice(0, 2);
 
   const stats = [
-    { label: 'Projects Completed', value: '12', icon: Target },
-    { label: 'Blog Posts Written', value: '34', icon: BookOpen },
+    { label: 'Projects Completed', value: countsLoading ? '...' : counts.projectCount.toString(), icon: Target },
+    { label: 'Blog Posts Written', value: countsLoading ? '...' : counts.postCount.toString(), icon: BookOpen },
     { label: 'Lines of Code', value: '25K+', icon: Code },
     { label: 'Days Learning', value: '180+', icon: Calendar },
   ];
@@ -186,7 +215,13 @@ export function HomePage({ onPageChange }: HomePageProps) {
               <div className="inline-flex items-center justify-center w-12 h-12 bg-primary/10 rounded-full mb-4">
                 <stat.icon className="h-6 w-6 text-primary" />
               </div>
-              <div className="text-2xl lg:text-3xl font-bold text-foreground mb-2">{stat.value}</div>
+              <div className="text-2xl lg:text-3xl font-bold text-foreground mb-2">
+                {countsLoading && (index === 0 || index === 1) ? (
+                  <Skeleton className="h-8 w-12 mx-auto" />
+                ) : (
+                  stat.value
+                )}
+              </div>
               <div className="text-sm text-muted-foreground">{stat.label}</div>
             </div>
           ))}
