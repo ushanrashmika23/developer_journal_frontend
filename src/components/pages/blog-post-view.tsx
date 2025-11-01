@@ -3,11 +3,11 @@ import { ArrowLeft, Calendar, Clock, Share2, Github, ExternalLink } from 'lucide
 import { Button } from '../ui/button';
 import { Badge } from '../ui/badge';
 import { Skeleton } from '../ui/skeleton';
+import { ShareModal } from '../ui/share-modal';
 import { BlogPost } from '../blog-card';
 import { ImageWithFallback } from '../figma/ImageWithFallback';
 import { useTheme } from '../theme-provider';
 import { API_ENDPOINTS } from '../../config/api';
-import { log } from 'console';
 
 interface BlogPostViewProps {
   postId: string;
@@ -33,6 +33,7 @@ export function BlogPostView({ postId, onBack, onPageChange }: BlogPostViewProps
   const [post, setPost] = useState<BlogPost | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isShareModalOpen, setIsShareModalOpen] = useState(false);
   const { theme } = useTheme();
   const startTimeRef = useRef<number | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -308,7 +309,7 @@ export function BlogPostView({ postId, onBack, onPageChange }: BlogPostViewProps
                 </Badge>
               ))}
             </div>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" onClick={() => setIsShareModalOpen(true)}>
               <Share2 className="w-4 h-4 mr-2" />
               Share
             </Button>
@@ -552,7 +553,7 @@ export function BlogPostView({ postId, onBack, onPageChange }: BlogPostViewProps
         <div className="mt-16 pt-8 border-t border-border">
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
             <div className="flex items-center gap-4">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" onClick={() => setIsShareModalOpen(true)}>
                 <Share2 className="w-4 h-4 mr-2" />
                 Share this post
               </Button>
@@ -572,6 +573,17 @@ export function BlogPostView({ postId, onBack, onPageChange }: BlogPostViewProps
         </div>
       </section>
       {/* <p>{post.content}</p> */}
+
+      {/* Share Modal */}
+      {post && (
+        <ShareModal
+          isOpen={isShareModalOpen}
+          onClose={() => setIsShareModalOpen(false)}
+          title={post.title}
+          url={`${window.location.origin}/blog/${post.id}`}
+          description={post.excerpt}
+        />
+      )}
     </div>
   );
 }
