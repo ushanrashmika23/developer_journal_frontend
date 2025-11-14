@@ -278,17 +278,26 @@ export function BlogPostView({ postId, onBack, onPageChange }: BlogPostViewProps
               {post.category.charAt(0).toUpperCase() + post.category.slice(1)}
             </Badge>
             <div className="flex items-center gap-4 text-sm text-muted-foreground">
-              <div className="flex items-center">
+              <div className="hidden sm:flex items-center">
                 <Clock className="w-4 h-4 mr-1" />
                 {Math.max(Math.floor(getReadingTime(post.id) / 60), 1)} min read
               </div>
               <div className="flex items-center">
                 <Calendar className="w-4 h-4 mr-1" />
-                {new Date(post.publishDate).toLocaleDateString('en-US', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric'
-                })}
+                <span className="hidden sm:inline">
+                  {new Date(post.publishDate).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                  })}
+                </span>
+                <span className="sm:hidden">
+                  {new Date(post.publishDate).toLocaleDateString('en-US', {
+                    year: '2-digit',
+                    month: 'short',
+                    day: 'numeric'
+                  })}
+                </span>
               </div>
             </div>
           </div>
