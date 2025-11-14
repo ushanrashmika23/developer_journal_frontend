@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ThemeProvider } from './components/theme-provider';
 import { Navigation } from './components/navigation';
+import { GridBackground } from './components/grid-background';
 import { HomePage } from './components/pages/home-page';
 import { ProjectsPage } from './components/pages/projects-page';
 import { BlogPage } from './components/pages/blog-page';
@@ -94,7 +95,7 @@ export default function App() {
 
   return (
     <ThemeProvider>
-      <div className="min-h-screen bg-background text-foreground transition-colors duration-300">
+      <GridBackground className="text-foreground transition-colors duration-300">
         <Navigation
           currentPage={currentPage.startsWith('blog-post-view') ? 'blog' : currentPage.startsWith('project-view') ? 'projects' : currentPage}
           onPageChange={handlePageChange}
@@ -105,7 +106,7 @@ export default function App() {
         </main>
 
         {/* Footer */}
-        <footer className="border-t border-border bg-background/50">
+        <footer className="border-t border-border bg-background/80 backdrop-blur-sm">
           <div className="max-w-[1200px] mx-auto px-6 lg:px-8 py-12">
             <div className="grid md:grid-cols-4 gap-8">
               <div className="md:col-span-2">
@@ -218,7 +219,7 @@ export default function App() {
             </div>
           </div>
         </footer>
-      </div>
+      </GridBackground>
     </ThemeProvider>
   );
 }

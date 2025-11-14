@@ -293,7 +293,7 @@ export function BlogPostView({ postId, onBack, onPageChange }: BlogPostViewProps
             </div>
           </div>
 
-          <h1 className="text-4xl lg:text-5xl font-bold text-foreground mb-4 leading-tight">
+          <h1 className="text-4xl lg:text-4xl font-bold text-foreground mb-4 leading-tight">
             {post.title}
           </h1>
 
@@ -331,7 +331,7 @@ export function BlogPostView({ postId, onBack, onPageChange }: BlogPostViewProps
       {/* Post Content */}
       <section className="max-w-[800px] mx-auto px-6 lg:px-8 pb-16">
         <article className="prose prose-lg max-w-none">
-          <div className={`leading-7 text-base ${theme === 'dark' ? 'text-foreground/65' : 'text-foreground/80'}`}>
+          <div className={`leading-8 text-lg font-normal ${theme === 'dark' ? 'text-gray-300' : 'text-foreground/85'}`} style={{ fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif' }}>
             {post.content?.split('\n\n').map((paragraph, index) => {
               // Headings
               if (paragraph.startsWith('# ')) {
@@ -370,8 +370,8 @@ export function BlogPostView({ postId, onBack, onPageChange }: BlogPostViewProps
               if (paragraph.startsWith('>')) {
                 const quote = paragraph.replace(/^> ?/gm, '');
                 return (
-                  <blockquote key={index} className={`border-l-4 border-primary/50 pl-6 py-4 mb-8 italic rounded-r-lg ${theme === 'dark' ? 'text-foreground/70 bg-primary/5' : 'text-foreground/85 bg-primary/5'}`}>
-                    <div className={`${theme === 'dark' ? 'text-foreground/70' : 'text-foreground/85'}`}>
+                  <blockquote key={index} className={`border-l-4 border-primary/50 pl-6 py-4 mb-8 italic rounded-r-lg ${theme === 'dark' ? 'text-gray-300 bg-primary/5' : 'text-foreground/90 bg-primary/5'}`}>
+                    <div className={`text-lg font-normal leading-8 ${theme === 'dark' ? 'text-gray-300' : 'text-foreground/90'}`}>
                       {quote}
                     </div>
                   </blockquote>
@@ -402,7 +402,7 @@ export function BlogPostView({ postId, onBack, onPageChange }: BlogPostViewProps
                         {rows.map((row, i) => (
                           <tr key={i} className="border-b border-border/50">
                             {row.map((cell, j) => (
-                              <td key={j} className={`px-4 py-3 ${theme === 'dark' ? 'text-foreground/65' : 'text-foreground/80'}`}>
+                              <td key={j} className={`px-4 py-3 text-lg font-normal leading-7 ${theme === 'dark' ? 'text-gray-300' : 'text-foreground/85'}`}>
                                 {cell.split(/(\*\*.*?\*\*|`.*?`|\[.*?\]\(.*?\))/g).map((part, k) => {
                                   // Bold text
                                   if (part.startsWith('**') && part.endsWith('**')) {
@@ -477,7 +477,7 @@ export function BlogPostView({ postId, onBack, onPageChange }: BlogPostViewProps
                 return (
                   <ul key={index} className="list-disc list-inside mb-6 space-y-3 pl-4">
                     {paragraph.split('\n').map((item, i) => (
-                      <li key={i} className={`leading-7 text-base ${theme === 'dark' ? 'text-foreground/65' : 'text-foreground/80'}`}>
+                      <li key={i} className={`leading-8 text-lg font-normal ${theme === 'dark' ? 'text-gray-300' : 'text-foreground/85'}`}>
                         {item.replace(/^- /, '').split(/(\*\*.*?\*\*|`.*?`|\[.*?\]\(.*?\))/g).map((part, j) => {
                           // Bold text
                           if (part.startsWith('**') && part.endsWith('**')) {
@@ -514,7 +514,7 @@ export function BlogPostView({ postId, onBack, onPageChange }: BlogPostViewProps
 
               // Regular paragraphs with inline formatting (links, bold, inline code)
               return (
-                <p key={index} className={`mb-6 leading-7 text-base ${theme === 'dark' ? 'text-foreground/65' : 'text-foreground/80'}`}>
+                <p key={index} className={`mb-6 leading-8 text-lg font-normal ${theme === 'dark' ? 'text-gray-300' : 'text-foreground/85'}`}>
                   {paragraph.split(/(\*\*.*?\*\*|`.*?`|\[.*?\]\(.*?\))/g).map((part, i) => {
                     // Bold text
                     if (part.startsWith('**') && part.endsWith('**')) {
@@ -553,21 +553,21 @@ export function BlogPostView({ postId, onBack, onPageChange }: BlogPostViewProps
         <div className="mt-16 pt-8 border-t border-border">
           <div className="flex flex-col md:flex-row gap-4 items-center justify-between">
             <div className="flex items-center gap-4">
-              <Button variant="outline" size="sm" onClick={() => setIsShareModalOpen(true)}>
-                <Share2 className="w-4 h-4 mr-2" />
-                Share this post
-              </Button>
               <Button variant="ghost" size="sm" onClick={() => onPageChange('blog')}>
                 ← More posts
               </Button>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="ghost" size="sm" asChild>
+              <Button variant="outline" size="sm" onClick={() => setIsShareModalOpen(true)}>
+                <Share2 className="w-4 h-4 mr-2" />
+                Share this post
+              </Button>
+              {/* <Button variant="ghost" size="sm" asChild>
                 <a href="https://github.com/username" target="_blank" rel="noopener noreferrer">
                   <Github className="w-4 h-4 mr-2" />
                   Discuss on GitHub
                 </a>
-              </Button>
+              </Button> */}
             </div>
           </div>
         </div>

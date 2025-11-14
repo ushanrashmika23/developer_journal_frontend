@@ -1,6 +1,7 @@
 // Global API configuration
 export const API_CONFIG = {
   BASE_URL: 'https://dev-journal-backend.vercel.app',
+  //BASE_URL: ' http://localhost:3000',
 } as const;
 
 // API endpoints
