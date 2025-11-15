@@ -25,7 +25,7 @@ const WhatsAppLogo = ({ className }: { className?: string }) => (
 const GmailLogo = ({ className }: { className?: string }) => (
     <svg className={className} viewBox="0 0 24 24" fill="#444" stroke="#444" strokeWidth="0.5">
         {/* Envelope body */}
-        <rect x="1" y="4" width="22" height="16" rx="2" ry="2" fill="#fff" stroke="#444" strokeWidth="2"/>
+        <rect x="1" y="4" width="22" height="16" rx="2" ry="2" fill="#444" stroke="#444" strokeWidth="2"/>
         {/* Envelope flap */}
         <path d="M1 6l11 8 11-8" fill="none" stroke="#444" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
