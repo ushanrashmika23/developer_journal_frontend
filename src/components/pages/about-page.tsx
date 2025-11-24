@@ -29,7 +29,6 @@ export function AboutPage({ onPageChange }: AboutPageProps) {
     { name: 'Express.js', level: 70, category: 'Backend' },
     { name: 'PostgreSQL', level: 75, category: 'Backend' },
     { name: 'MongoDB', level: 70, category: 'Backend' },
-    { name: 'Supabase', level: 80, category: 'Backend' },
     { name: 'Git', level: 85, category: 'Tools' },
     { name: 'Docker', level: 60, category: 'Tools' },
     { name: 'Figma', level: 75, category: 'Design' },

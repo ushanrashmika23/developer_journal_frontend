@@ -28,7 +28,7 @@ export function Navigation({ currentPage, onPageChange }: NavigationProps) {
     { id: 'home', label: 'Home' },
     { id: 'blog', label: 'Blog' },
     { id: 'projects', label: 'Projects' },
-    // { id: 'timeline', label: 'Timeline' },
+    { id: 'timeline', label: 'Timeline' },
     { id: 'about', label: 'About' },
   ];
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Calendar, Code, BookOpen, Trophy, Users, ExternalLink } from 'lucide-react';
+import { Calendar, Code, Trophy, Users, ExternalLink, Briefcase } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
 import { Card, CardContent } from '../ui/card';
@@ -7,7 +7,7 @@ import { Card, CardContent } from '../ui/card';
 interface TimelineEvent {
   id: string;
   date: string;
-  type: 'project' | 'learning' | 'milestone' | 'collaboration' | 'achievement';
+  type: 'project' | 'achievement' | 'experience';
   title: string;
   description: string;
   tags: string[];
@@ -19,11 +19,12 @@ interface TimelineEvent {
 }
 
 interface TimelinePageProps {
-  onPageChange: (page: string, params?: {[key: string]: string}) => void;
+  onPageChange: (page: string, params?: { [key: string]: string }) => void;
 }
 
 export function TimelinePage({ onPageChange }: TimelinePageProps) {
   const [selectedYear, setSelectedYear] = useState<string>('all');
+  const [selectedEventType, setSelectedEventType] = useState<string>('all');
 
   const timelineEvents: TimelineEvent[] = [
     {
@@ -39,17 +40,9 @@ export function TimelinePage({ onPageChange }: TimelinePageProps) {
       ],
     },
     {
-      id: '2',
-      date: '2024-12-15',
-      type: 'learning',
-      title: 'Mastered Advanced React Patterns',
-      description: 'Deep dived into advanced React patterns including compound components, render props, and custom hooks. Applied these patterns in real projects.',
-      tags: ['React', 'Patterns', 'Hooks', 'Architecture'],
-    },
-    {
       id: '3',
       date: '2024-12-01',
-      type: 'collaboration',
+      type: 'experience',
       title: 'Contributed to Open Source',
       description: 'Made my first significant contributions to open source projects including bug fixes and feature additions to popular React libraries.',
       tags: ['Open Source', 'Community', 'React', 'JavaScript'],
@@ -62,8 +55,8 @@ export function TimelinePage({ onPageChange }: TimelinePageProps) {
       date: '2024-11-20',
       type: 'achievement',
       title: 'Reached 1000+ Lines of TypeScript',
-      description: 'Milestone achievement in my TypeScript journey. Built multiple projects with strong typing and learned advanced TypeScript features.',
-      tags: ['TypeScript', 'Milestone', 'Learning'],
+      description: 'Major achievement in my TypeScript journey. Built multiple projects with strong typing and learned advanced TypeScript features.',
+      tags: ['TypeScript', 'Achievement', 'Learning'],
     },
     {
       id: '5',
@@ -75,14 +68,6 @@ export function TimelinePage({ onPageChange }: TimelinePageProps) {
       links: [
         { label: 'Progress', url: '/projects' },
       ],
-    },
-    {
-      id: '6',
-      date: '2024-10-15',
-      type: 'learning',
-      title: 'Learned Database Design',
-      description: 'Completed comprehensive course on database design principles, normalization, and SQL optimization. Applied knowledge in personal projects.',
-      tags: ['Database', 'SQL', 'PostgreSQL', 'Design'],
     },
     {
       id: '7',
@@ -98,7 +83,7 @@ export function TimelinePage({ onPageChange }: TimelinePageProps) {
     {
       id: '8',
       date: '2024-09-15',
-      type: 'milestone',
+      type: 'achievement',
       title: 'Completed 100 Days of Code',
       description: 'Successfully completed the 100 Days of Code challenge, building projects and learning new technologies consistently for 100 days.',
       tags: ['100DaysOfCode', 'Consistency', 'Learning', 'Challenge'],
@@ -116,17 +101,9 @@ export function TimelinePage({ onPageChange }: TimelinePageProps) {
       ],
     },
     {
-      id: '10',
-      date: '2024-08-01',
-      type: 'learning',
-      title: 'Started Learning React',
-      description: 'Began my React journey after mastering vanilla JavaScript. Started with basic components and gradually moved to hooks and state management.',
-      tags: ['React', 'JavaScript', 'Components', 'Hooks'],
-    },
-    {
       id: '11',
       date: '2024-07-01',
-      type: 'milestone',
+      type: 'project',
       title: 'Launched Portfolio Website v3',
       description: 'Third iteration of my portfolio website with improved performance, accessibility, and modern design using Astro and React.',
       tags: ['Astro', 'React', 'Portfolio', 'Performance'],
@@ -146,17 +123,9 @@ export function TimelinePage({ onPageChange }: TimelinePageProps) {
       ],
     },
     {
-      id: '13',
-      date: '2024-05-01',
-      type: 'learning',
-      title: 'Mastered CSS Grid & Flexbox',
-      description: 'Deep understanding of modern CSS layout systems. Built several layout demos and wrote tutorials on best practices.',
-      tags: ['CSS', 'Grid', 'Flexbox', 'Layout'],
-    },
-    {
       id: '14',
       date: '2024-04-01',
-      type: 'milestone',
+      type: 'experience',
       title: 'Started Developer Journey',
       description: 'Made the decision to transition into web development. Began with HTML, CSS, and JavaScript fundamentals.',
       tags: ['Career Change', 'HTML', 'CSS', 'JavaScript'],
@@ -167,14 +136,10 @@ export function TimelinePage({ onPageChange }: TimelinePageProps) {
     switch (type) {
       case 'project':
         return Code;
-      case 'learning':
-        return BookOpen;
-      case 'milestone':
-        return Trophy;
-      case 'collaboration':
-        return Users;
       case 'achievement':
         return Trophy;
+      case 'experience':
+        return Briefcase;
       default:
         return Calendar;
     }
@@ -184,28 +149,24 @@ export function TimelinePage({ onPageChange }: TimelinePageProps) {
     switch (type) {
       case 'project':
         return 'bg-green-500/10 text-green-600 border-green-200';
-      case 'learning':
-        return 'bg-blue-500/10 text-blue-600 border-blue-200';
-      case 'milestone':
-        return 'bg-purple-500/10 text-purple-600 border-purple-200';
-      case 'collaboration':
-        return 'bg-orange-500/10 text-orange-600 border-orange-200';
       case 'achievement':
-        return 'bg-yellow-500/10 text-yellow-600 border-yellow-200';
+        return 'bg-blue-500/10 text-blue-600 border-blue-200';
+      case 'experience':
+        return 'bg-orange-500/10 text-orange-600 border-orange-200';
       default:
         return 'bg-gray-500/10 text-gray-600 border-gray-200';
     }
   };
 
-  const years = Array.from(new Set(timelineEvents.map(event => 
+  const years = Array.from(new Set(timelineEvents.map(event =>
     new Date(event.date).getFullYear().toString()
   ))).sort((a, b) => parseInt(b) - parseInt(a));
 
-  const filteredEvents = selectedYear === 'all' 
-    ? timelineEvents 
-    : timelineEvents.filter(event => 
-        new Date(event.date).getFullYear().toString() === selectedYear
-      );
+  const filteredEvents = timelineEvents.filter(event => {
+    const yearMatch = selectedYear === 'all' || new Date(event.date).getFullYear().toString() === selectedYear;
+    const typeMatch = selectedEventType === 'all' || event.type === selectedEventType;
+    return yearMatch && typeMatch;
+  });
 
   const eventCounts = timelineEvents.reduce((acc, event) => {
     acc[event.type] = (acc[event.type] || 0) + 1;
@@ -221,37 +182,29 @@ export function TimelinePage({ onPageChange }: TimelinePageProps) {
             My Developer Timeline
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            A chronological journey through my development career. From first lines of code 
-            to major milestones, projects, and continuous learning achievements.
+            A chronological journey through my development career. From first lines of code
+            to major projects, achievements, and experiences.
           </p>
         </div>
 
         {/* Timeline Stats */}
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
-          <div className="text-center p-4 bg-card rounded-lg border border-border">
+        <div className="flex flex-row justify-center gap-4 mb-8">
+          <div className="text-center p-4 bg-card rounded-lg border border-border flex-1 max-w-xs">
             <div className="text-2xl font-bold text-green-600">{eventCounts.project || 0}</div>
             <div className="text-sm text-muted-foreground">Projects</div>
           </div>
-          <div className="text-center p-4 bg-card rounded-lg border border-border">
-            <div className="text-2xl font-bold text-blue-600">{eventCounts.learning || 0}</div>
-            <div className="text-sm text-muted-foreground">Learning</div>
+          <div className="text-center p-4 bg-card rounded-lg border border-border flex-1 max-w-xs">
+            <div className="text-2xl font-bold text-orange-600">{eventCounts.experience || 0}</div>
+            <div className="text-sm text-muted-foreground">Experiences</div>
           </div>
-          <div className="text-center p-4 bg-card rounded-lg border border-border">
-            <div className="text-2xl font-bold text-purple-600">{eventCounts.milestone || 0}</div>
-            <div className="text-sm text-muted-foreground">Milestones</div>
-          </div>
-          <div className="text-center p-4 bg-card rounded-lg border border-border">
-            <div className="text-2xl font-bold text-orange-600">{eventCounts.collaboration || 0}</div>
-            <div className="text-sm text-muted-foreground">Collaborations</div>
-          </div>
-          <div className="text-center p-4 bg-card rounded-lg border border-border">
-            <div className="text-2xl font-bold text-yellow-600">{eventCounts.achievement || 0}</div>
+          <div className="text-center p-4 bg-card rounded-lg border border-border flex-1 max-w-xs">
+            <div className="text-2xl font-bold text-blue-600">{eventCounts.achievement || 0}</div>
             <div className="text-sm text-muted-foreground">Achievements</div>
           </div>
         </div>
 
         {/* Year Filter */}
-        <div className="flex flex-wrap justify-center gap-2 mb-8">
+        <div className="flex flex-wrap justify-center gap-2 mb-6">
           <Button
             variant={selectedYear === 'all' ? 'default' : 'outline'}
             size="sm"
@@ -269,6 +222,41 @@ export function TimelinePage({ onPageChange }: TimelinePageProps) {
               {year}
             </Button>
           ))}
+        </div>
+
+        {/* Event Type Filter */}
+        <div className="flex flex-wrap justify-center gap-2 mb-8">
+          <Button
+            variant={selectedEventType === 'all' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setSelectedEventType('all')}
+          >
+            All Types
+          </Button>
+          <Button
+            variant={selectedEventType === 'project' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setSelectedEventType('project')}
+            className={selectedEventType === 'project' ? '' : 'border-green-200 hover:bg-green-50'}
+          >
+            Projects
+          </Button>
+          <Button
+            variant={selectedEventType === 'experience' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setSelectedEventType('experience')}
+            className={selectedEventType === 'experience' ? '' : ' border-orange-200 hover:bg-orange-50'}
+          >
+            Experiences
+          </Button>
+          <Button
+            variant={selectedEventType === 'achievement' ? 'default' : 'outline'}
+            size="sm"
+            onClick={() => setSelectedEventType('achievement')}
+            className={selectedEventType === 'achievement' ? '' : 'border-blue-200 hover:bg-blue-50'}
+          >
+            Achievements
+          </Button>
         </div>
       </section>
 
@@ -308,8 +296,8 @@ export function TimelinePage({ onPageChange }: TimelinePageProps) {
                             })}
                           </div>
                         </div>
-                        <Badge 
-                          variant="outline" 
+                        <Badge
+                          variant="outline"
                           className={getEventColor(event.type)}
                         >
                           {event.type.charAt(0).toUpperCase() + event.type.slice(1)}
@@ -367,8 +355,11 @@ export function TimelinePage({ onPageChange }: TimelinePageProps) {
             <p className="text-muted-foreground mb-6">
               No timeline events found for the selected year.
             </p>
-            <Button onClick={() => setSelectedYear('all')}>
-              View All Years
+            <Button onClick={() => {
+              setSelectedYear('all');
+              setSelectedEventType('all');
+            }}>
+              View All Events
             </Button>
           </div>
         )}
