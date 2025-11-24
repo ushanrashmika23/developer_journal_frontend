@@ -188,7 +188,7 @@ export function TimelinePage({ onPageChange }: TimelinePageProps) {
         </div>
 
         {/* Timeline Stats */}
-        <div className="flex flex-row justify-center gap-4 mb-8">
+        <div className="flex flex-col sm:flex-row justify-center gap-4 mb-8">
           <div className="text-center p-4 bg-card rounded-lg border border-border flex-1 max-w-xs">
             <div className="text-2xl font-bold text-green-600">{eventCounts.project || 0}</div>
             <div className="text-sm text-muted-foreground">Projects</div>
@@ -282,26 +282,37 @@ export function TimelinePage({ onPageChange }: TimelinePageProps) {
                   {/* Event Content */}
                   <Card className="flex-1 card-hover">
                     <CardContent className="p-6">
-                      <div className="flex items-start justify-between mb-3">
-                        <div>
-                          <h3 className="text-lg font-semibold text-card-foreground mb-1">
+                      <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between mb-3 gap-2">
+                        <div className="flex-1 min-w-0">
+                          <h3 className="text-lg font-semibold text-card-foreground mb-1 break-words">
                             {event.title}
                           </h3>
                           <div className="flex items-center text-sm text-muted-foreground">
-                            <Calendar className="w-4 h-4 mr-1" />
-                            {new Date(event.date).toLocaleDateString('en-US', {
-                              year: 'numeric',
-                              month: 'long',
-                              day: 'numeric'
-                            })}
+                            <Calendar className="w-4 h-4 mr-1 flex-shrink-0" />
+                            <span className="hidden sm:inline">
+                              {new Date(event.date).toLocaleDateString('en-US', {
+                                year: 'numeric',
+                                month: 'long',
+                                day: 'numeric'
+                              })}
+                            </span>
+                            <span className="sm:hidden">
+                              {new Date(event.date).toLocaleDateString('en-US', {
+                                year: '2-digit',
+                                month: 'short',
+                                day: 'numeric'
+                              })}
+                            </span>
                           </div>
                         </div>
+                        <div className="flex-shrink-0 self-start">
                         <Badge
                           variant="outline"
                           className={getEventColor(event.type)}
                         >
                           {event.type.charAt(0).toUpperCase() + event.type.slice(1)}
                         </Badge>
+                        </div>
                       </div>
 
                       <p className="text-muted-foreground mb-4">
